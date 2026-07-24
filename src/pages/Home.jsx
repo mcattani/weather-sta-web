@@ -6,7 +6,9 @@ import {
     Speedometer2,
     Wind,
     ClockHistory,
-    GeoAltFill
+    GeoAltFill,
+    CloudSun,
+    Sun
 } from 'react-bootstrap-icons';
 
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
@@ -128,6 +130,18 @@ export default function Home() {
     const hayDatosRecientes = Boolean(sensorData?.timestamp);
     const estadoEstacion = hayDatosRecientes ? 'Estación Online' : 'Sin datos recientes';
     const varianteBadge = hayDatosRecientes ? 'success' : 'warning';
+    const uvValue = weatherApiData?.current?.uv;
+    const uvNivel = uvValue == null
+        ? 'Sin datos'
+        : uvValue <= 2
+            ? 'Bajo'
+            : uvValue <= 5
+                ? 'Moderado'
+                : uvValue <= 7
+                    ? 'Alto'
+                    : uvValue <= 10
+                        ? 'Muy alto'
+                        : 'Extremo';
 
     // Render principal del dashboard con valores de respaldo si alguna fuente falla.
     return (
@@ -138,7 +152,7 @@ export default function Home() {
                 </Alert>
             )}
 
-            {/* Cabecera con estilo más moderno y mejor jerarquía visual. */}
+            {/* Cabecera */}
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2 p-3 p-md-4 rounded-4 border border-secondary-subtle bg-dark-subtle shadow-sm">
                 <div>
                     <h2 className="fw-bold mb-1">Condiciones Actuales</h2>
@@ -160,7 +174,7 @@ export default function Home() {
                         <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
                             <div className="d-flex justify-content-between align-items-start mb-3">
                                 <Card.Title className="text-muted fs-6 mb-0">Estado</Card.Title>
-                                <Wind size={24} className="text-primary" />
+                                <CloudSun size={24} className="text-primary" />
                             </div>
                             <div className="d-flex flex-column align-items-center justify-content-center text-center flex-grow-1 py-2">
                                 {weatherApiData?.current ? (
@@ -247,7 +261,7 @@ export default function Home() {
                     </Card>
                 </Col>
 
-                {/* Viento como tarjeta independiente y final. */}
+                {/* Viento */}
                 <Col xs={12} sm={6} lg={3}>
                     <Card className="h-100 border-0 shadow-sm rounded-4 bg-gradient" style={{ background: 'linear-gradient(135deg, rgba(111,66,193,0.16), rgba(111,66,193,0.05))' }}>
                         <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
@@ -268,7 +282,31 @@ export default function Home() {
                         </Card.Body>
                     </Card>
                 </Col>
+
+                {/* UV */}
+                <Col xs={12} sm={6} lg={3}>
+                    <Card className="h-100 border-0 shadow-sm rounded-4 bg-gradient" style={{ background: 'linear-gradient(135deg, rgba(255,193,7,0.18), rgba(255,193,7,0.05))' }}>
+                        <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
+                            <div className="d-flex justify-content-between align-items-start mb-3">
+                                <Card.Title className="text-muted fs-6 mb-0">UV</Card.Title>
+                                <Sun size={24} className="text-warning" />
+                            </div>
+                            <div className="text-center py-2">
+                                {weatherApiData?.current ? (
+                                    <>
+                                        <h3 className="fw-bold mb-1">{weatherApiData.current.uv}</h3>
+                                        <small className="text-muted d-block">Índice ultravioleta</small>
+                                        <span className="fw-semibold mt-2 d-inline-block">{uvNivel}</span>
+                                    </>
+                                ) : (
+                                    <small className="text-muted d-block">Sin datos de UV</small>
+                                )}
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
             </Row>
+
         </Container>
     );
 }
