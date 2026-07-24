@@ -14,6 +14,9 @@ import {
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
+const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+const CITY = 'Buenos Aires';
+
 function formatearFechaISO(fechaISO) {
     const fecha = new Date(fechaISO);
 
@@ -37,22 +40,16 @@ function formatearFechaISO(fechaISO) {
 export default function Home() {
     const [sensorData, setSensorData] = useState(null);
     const [weatherApiData, setWeatherApiData] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [sensorError, setSensorError] = useState(null);
-    const [weatherError, setWeatherError] = useState(null);
+    const [weatherError, setWeatherError] = useState(
+        WEATHER_API_KEY ? null : 'Falta la clave VITE_WEATHER_API_KEY.'
+    );
     const [sensorStatus, setSensorStatus] = useState('loading');
-    const [weatherStatus, setWeatherStatus] = useState('loading');
+    const [weatherStatus, setWeatherStatus] = useState(
+        WEATHER_API_KEY ? 'loading' : 'error'
+    );
 
-    // Variables de configuración para la API de WeatherApi.
-    const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
-    const CITY = 'Buenos Aires';
-
-    // Finaliza la pantalla de carga cuando una fuente ya respondió.
-    useEffect(() => {
-        if (sensorStatus !== 'loading' || weatherStatus !== 'loading') {
-            setLoading(false);
-        }
-    }, [sensorStatus, weatherStatus]);
+    const loading = sensorStatus === 'loading' || weatherStatus === 'loading';
 
     // Suscripción a Firestore para recibir el último dato de los sensores en tiempo real.
     useEffect(() => {
@@ -88,8 +85,6 @@ export default function Home() {
     // Consulta adicional a WeatherAPI para completar la información visual del dashboard.
     useEffect(() => {
         if (!WEATHER_API_KEY) {
-            setWeatherError("Falta la clave VITE_WEATHER_API_KEY.");
-            setWeatherStatus('error');
             return;
         }
 

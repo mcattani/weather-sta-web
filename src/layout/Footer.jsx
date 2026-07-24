@@ -1,7 +1,9 @@
 import { Container } from "react-bootstrap";
 import { FaBlogger } from "react-icons/fa";
+import packageJson from "../../package.json";
 
 export default function Footer() {
+    const appVersion = import.meta.env.VITE_APP_VERSION || packageJson.version;
 
     return (
         <footer className="bg-dark text-white text-center py-3 mt-5">
@@ -22,7 +24,7 @@ export default function Footer() {
                             style={{ verticalAlign: "middle" }}
                         />
                     </a>{" "}
-                    - Todos los errores reservados. (v{__APP_VERSION__})
+                    - Todos los errores reservados. (v{appVersion})
                 </p>
             </Container>
         </footer>
