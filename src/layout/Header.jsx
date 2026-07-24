@@ -7,7 +7,7 @@ export default function Header() {
             <Container>
                 <Navbar.Brand href="#" className="d-flex align-items-center gap-2 fw-bold">
                     <CloudSunFill size={28} className="text-warning" />
-                    C3 Weather Sta
+                    Weather STA - TNA
                 </Navbar.Brand>
             </Container>
         </Navbar>

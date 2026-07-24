@@ -131,17 +131,21 @@ export default function Home() {
     const estadoEstacion = hayDatosRecientes ? 'Estación Online' : 'Sin datos recientes';
     const varianteBadge = hayDatosRecientes ? 'success' : 'warning';
     const uvValue = weatherApiData?.current?.uv;
-    const uvNivel = uvValue == null
-        ? 'Sin datos'
-        : uvValue <= 2
-            ? 'Bajo'
-            : uvValue <= 5
-                ? 'Moderado'
-                : uvValue <= 7
-                    ? 'Alto'
-                    : uvValue <= 10
-                        ? 'Muy alto'
-                        : 'Extremo';
+    let uvNivel = 'Sin datos';
+
+    if (uvValue != null) {
+        if (uvValue <= 2) {
+            uvNivel = 'Bajo';
+        } else if (uvValue <= 5) {
+            uvNivel = 'Moderado';
+        } else if (uvValue <= 7) {
+            uvNivel = 'Alto';
+        } else if (uvValue <= 10) {
+            uvNivel = 'Muy alto';
+        } else {
+            uvNivel = 'Extremo';
+        }
+    }
 
     // Render principal del dashboard con valores de respaldo si alguna fuente falla.
     return (
