@@ -270,7 +270,7 @@ export default function Home() {
                                 <Card.Title className="text-muted fs-6 mb-0">Viento</Card.Title>
                                 <Wind size={24} className="text-purple" />
                             </div>
-                            <div>
+                            <div className="d-flex flex-column align-items-center justify-content-center text-center flex-grow-1 py-2 px-1">
                                 {weatherApiData?.current ? (
                                     <>
                                         <h3 className="fw-bold mb-1">{weatherApiData.current.wind_kph} km/h</h3>
