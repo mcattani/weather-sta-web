@@ -131,46 +131,74 @@ export default function Home() {
 
     // Render principal del dashboard con valores de respaldo si alguna fuente falla.
     return (
-        <Container className="mb-5">
+        <Container className="mb-5 px-2 px-md-3">
             {alertMessage && (
-                <Alert variant={alertVariant} className="mb-3">
+                <Alert variant={alertVariant} className="mb-3 rounded-4 border-0 shadow-sm">
                     {alertMessage}
                 </Alert>
             )}
 
-            {/* Cabecera con la ubicación y la hora de la última lectura. */}
-            <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            {/* Cabecera con estilo más moderno y mejor jerarquía visual. */}
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2 p-3 p-md-4 rounded-4 border border-secondary-subtle bg-dark-subtle shadow-sm">
                 <div>
-                    <h2 className="fw-bold mb-0">Condiciones Actuales</h2>
-                    <small className="text-muted d-flex align-items-center gap-1 mt-1">
-                        <GeoAltFill size={14} /> {CITY} |
-                        <ClockHistory size={14} className="ms-1" /> Última Lectura: {ultimaLectura}
+                    <h2 className="fw-bold mb-1">Condiciones Actuales</h2>
+                    <small className="text-muted d-flex flex-wrap align-items-center gap-1">
+                        <GeoAltFill size={14} /> {CITY}
+                        <span className="mx-1">•</span>
+                        <ClockHistory size={14} /> Última Lectura: {ultimaLectura}
                     </small>
                 </div>
-                <Badge bg={varianteBadge} className="px-3 py-2 fs-6">
+                <Badge bg={varianteBadge} className="px-3 py-2 fs-6 rounded-pill">
                     {estadoEstacion}
                 </Badge>
             </div>
 
-            <Row className="g-4">
+            <Row className="g-3 g-lg-4">
+                {/* Estado general del clima obtenido desde la API meteorológica externa. */}
+                <Col xs={12} sm={6} lg={3}>
+                    <Card className="h-100 border-0 shadow-sm rounded-4 bg-gradient" style={{ background: 'linear-gradient(135deg, rgba(13,110,253,0.16), rgba(13,110,253,0.05))' }}>
+                        <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
+                            <div className="d-flex justify-content-between align-items-start mb-3">
+                                <Card.Title className="text-muted fs-6 mb-0">Estado</Card.Title>
+                                <Wind size={24} className="text-primary" />
+                            </div>
+                            <div className="d-flex flex-column align-items-center justify-content-center text-center flex-grow-1 py-2">
+                                {weatherApiData?.current ? (
+                                    <>
+                                        <img
+                                            src={weatherApiData.current.condition.icon}
+                                            alt={weatherApiData.current.condition.text}
+                                            width={56}
+                                            className="mb-2"
+                                        />
+                                        <span className="fw-semibold fs-6">{weatherApiData.current.condition.text}</span>
+                                    </>
+                                ) : (
+                                    <small className="text-muted d-block">Sin datos del clima</small>
+                                )}
+                            </div>
+                        </Card.Body>
+                    </Card>
+                </Col>
+
                 {/* Temperatura medida por el sensor SHT30 y sensación térmica externa. */}
-                <Col md={6} lg={3}>
-                    <Card className="h-100 bg-dark-subtle border-secondary">
-                        <Card.Body className="d-flex flex-column justify-content-between">
-                            <div className="d-flex justify-content-between align-items-start">
-                                <Card.Title className="text-muted fs-6">Temperatura</Card.Title>
+                <Col xs={12} sm={6} lg={3}>
+                    <Card className="h-100 border-0 shadow-sm rounded-4 bg-gradient" style={{ background: 'linear-gradient(135deg, rgba(255,99,132,0.18), rgba(255,99,132,0.05))' }}>
+                        <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
+                            <div className="d-flex justify-content-between align-items-start mb-3">
+                                <Card.Title className="text-muted fs-6 mb-0">Temperatura</Card.Title>
                                 <ThermometerHalf size={24} className="text-danger" />
                             </div>
-                            <div className="my-3">
-                                <h1 className="display-5 fw-bold mb-0">
+                            <div>
+                                <h1 className="display-6 fw-bold mb-2">
                                     {sensorData?.temperatura != null ? `${sensorData.temperatura.toFixed(1)} °C` : '-- °C'}
                                 </h1>
                                 {weatherApiData?.current ? (
-                                    <small className="text-muted">
+                                    <small className="text-muted d-block">
                                         Sensación térmica: {weatherApiData.current.feelslike_c}°C
                                     </small>
                                 ) : (
-                                    <small className="text-muted">Sin datos de sensación térmica</small>
+                                    <small className="text-muted d-block">Sin datos de sensación térmica</small>
                                 )}
                             </div>
                         </Card.Body>
@@ -178,23 +206,23 @@ export default function Home() {
                 </Col>
 
                 {/* Humedad relativa medida por el sensor SHT30. */}
-                <Col md={6} lg={3}>
-                    <Card className="h-100 bg-dark-subtle border-secondary">
-                        <Card.Body className="d-flex flex-column justify-content-between">
-                            <div className="d-flex justify-content-between align-items-start">
-                                <Card.Title className="text-muted fs-6">Humedad</Card.Title>
+                <Col xs={12} sm={6} lg={3}>
+                    <Card className="h-100 border-0 shadow-sm rounded-4 bg-gradient" style={{ background: 'linear-gradient(135deg, rgba(13,202,240,0.16), rgba(13,202,240,0.05))' }}>
+                        <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
+                            <div className="d-flex justify-content-between align-items-start mb-3">
+                                <Card.Title className="text-muted fs-6 mb-0">Humedad</Card.Title>
                                 <DropletHalf size={24} className="text-info" />
                             </div>
-                            <div className="my-3">
-                                <h1 className="display-5 fw-bold mb-0">
+                            <div>
+                                <h1 className="display-6 fw-bold mb-2">
                                     {sensorData?.humedad != null ? `${sensorData.humedad.toFixed(1)} %` : '-- %'}
                                 </h1>
                                 {weatherApiData?.current ? (
-                                    <small className="text-muted">
+                                    <small className="text-muted d-block">
                                         Punto de rocío estimado: {weatherApiData.current.dewpoint_c ?? '--'}°C
                                     </small>
                                 ) : (
-                                    <small className="text-muted">Sin datos de punto de rocío</small>
+                                    <small className="text-muted d-block">Sin datos de punto de rocío</small>
                                 )}
                             </div>
                         </Card.Body>
@@ -202,48 +230,39 @@ export default function Home() {
                 </Col>
 
                 {/* Presión atmosférica medida por el sensor BMP280. */}
-                <Col md={6} lg={3}>
-                    <Card className="h-100 bg-dark-subtle border-secondary">
-                        <Card.Body className="d-flex flex-column justify-content-between">
-                            <div className="d-flex justify-content-between align-items-start">
-                                <Card.Title className="text-muted fs-6">Presión Atmosférica</Card.Title>
+                <Col xs={12} sm={6} lg={3}>
+                    <Card className="h-100 border-0 shadow-sm rounded-4 bg-gradient" style={{ background: 'linear-gradient(135deg, rgba(255,193,7,0.16), rgba(255,193,7,0.05))' }}>
+                        <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
+                            <div className="d-flex justify-content-between align-items-start mb-3">
+                                <Card.Title className="text-muted fs-6 mb-0">Presión Atmosférica</Card.Title>
                                 <Speedometer2 size={24} className="text-warning" />
                             </div>
-                            <div className="my-3">
-                                <h1 className="display-5 fw-bold mb-0">
+                            <div>
+                                <h1 className="display-6 fw-bold mb-2">
                                     {sensorData?.presion != null ? sensorData.presion.toFixed(1) : '--'}
                                 </h1>
-                                <small className="text-muted">hPa (Hectopascales)</small>
+                                <small className="text-muted d-block">hPa (Hectopascales)</small>
                             </div>
                         </Card.Body>
                     </Card>
                 </Col>
 
-                {/* Estado general y viento obtenidos desde la API meteorológica externa. */}
-                <Col md={6} lg={3}>
-                    <Card className="h-100 bg-dark-subtle border-secondary">
-                        <Card.Body className="d-flex flex-column justify-content-between">
-                            <div className="d-flex justify-content-between align-items-start">
-                                <Card.Title className="text-muted fs-6">Estado / Viento</Card.Title>
-                                <Wind size={24} className="text-primary" />
+                {/* Viento como tarjeta independiente y final. */}
+                <Col xs={12} sm={6} lg={3}>
+                    <Card className="h-100 border-0 shadow-sm rounded-4 bg-gradient" style={{ background: 'linear-gradient(135deg, rgba(111,66,193,0.16), rgba(111,66,193,0.05))' }}>
+                        <Card.Body className="d-flex flex-column justify-content-between p-3 p-md-4">
+                            <div className="d-flex justify-content-between align-items-start mb-3">
+                                <Card.Title className="text-muted fs-6 mb-0">Viento</Card.Title>
+                                <Wind size={24} className="text-purple" />
                             </div>
-                            <div className="my-2">
+                            <div>
                                 {weatherApiData?.current ? (
                                     <>
-                                        <div className="d-flex align-items-center gap-2">
-                                            <img
-                                                src={weatherApiData.current.condition.icon}
-                                                alt={weatherApiData.current.condition.text}
-                                                width={48}
-                                            />
-                                            <span className="fw-semibold">{weatherApiData.current.condition.text}</span>
-                                        </div>
-                                        <small className="text-muted d-block mt-1">
-                                            Viento: {weatherApiData.current.wind_kph} km/h ({weatherApiData.current.wind_dir})
-                                        </small>
+                                        <h3 className="fw-bold mb-1">{weatherApiData.current.wind_kph} km/h</h3>
+                                        <small className="text-muted d-block">Dirección: {weatherApiData.current.wind_dir}</small>
                                     </>
                                 ) : (
-                                    <small className="text-muted">Sin datos del clima</small>
+                                    <small className="text-muted d-block">Sin datos de viento</small>
                                 )}
                             </div>
                         </Card.Body>
