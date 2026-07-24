@@ -176,16 +176,18 @@ export default function Home() {
                                 <Card.Title className="text-muted fs-6 mb-0">Estado</Card.Title>
                                 <CloudSun size={24} className="text-primary" />
                             </div>
-                            <div className="d-flex flex-column align-items-center justify-content-center text-center flex-grow-1 py-2">
+                            <div className="d-flex flex-column align-items-center justify-content-center text-center flex-grow-1 py-2 px-1">
                                 {weatherApiData?.current ? (
                                     <>
                                         <img
                                             src={weatherApiData.current.condition.icon}
                                             alt={weatherApiData.current.condition.text}
-                                            width={56}
+                                            width={48}
                                             className="mb-2"
                                         />
-                                        <span className="fw-semibold fs-6">{weatherApiData.current.condition.text}</span>
+                                        <span className="fw-semibold fs-6" style={{ lineHeight: 1.2, maxWidth: '100%' }}>
+                                            {weatherApiData.current.condition.text}
+                                        </span>
                                     </>
                                 ) : (
                                     <small className="text-muted d-block">Sin datos del clima</small>
