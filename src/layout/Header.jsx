@@ -3,11 +3,15 @@ import { CloudSunFill } from 'react-bootstrap-icons';
 
 export default function Header() {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className="border-bottom border-secondary mb-4">
+        <Navbar
+            expand="lg"
+            className="glass-navbar mb-4 py-3 sticky-top"
+        >
             <Container>
-                <Navbar.Brand href="#" className="d-flex align-items-center gap-2 fw-bold">
-                    <CloudSunFill size={28} className="text-warning" />
-                    Weather STA - TNA
+                <Navbar.Brand href="#" className="d-flex align-items-center gap-2 fw-bold mb-0">
+                    <CloudSunFill size={26} style={{ color: '#FFB74D' }} />
+                    <span className="display-font">Weather STA</span>
+                    <span className="eyebrow ms-1">TNA</span>
                 </Navbar.Brand>
             </Container>
         </Navbar>

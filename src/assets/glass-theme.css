@@ -1,0 +1,270 @@
+/* =========================================================
+   Weather STA — "Liquid Glass" theme
+   Instrument-panel dashboard floating over a clear-sky backdrop.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+  /* --- palette --- */
+  --sky-top: #4FA8DA;
+  --sky-mid: #8FD3F0;
+  --sky-horizon: #EAF7FC;
+  --sun-glow: #FFCF7A;
+  --ink: #123047;
+  --ink-soft: rgba(18, 48, 71, 0.64);
+  --accent-coral: #FF7A59;
+  --accent-teal: #17B4A6;
+
+  /* --- glass surfaces ---
+     Turn this dial to taste: lower the two --glass-bg* values for more
+     see-through panels, raise them if text starts fighting the photo.
+     The text-shadow below is what keeps legibility from collapsing as
+     you push the opacity down. */
+  --glass-bg: rgba(255, 255, 255, 0.10);
+  --glass-bg-strong: rgba(255, 255, 255, 0.20);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-shadow: 0 12px 36px rgba(18, 48, 71, 0.20);
+  --glass-blur: 22px;
+  --glass-text-shadow: 0 1px 12px rgba(255, 255, 255, 0.55);
+
+  /* --- type --- */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+@media (max-width: 576px) {
+  :root { --glass-blur: 12px; }
+}
+
+html, body, #root {
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  position: relative;
+  isolation: isolate;
+  overflow-x: hidden;
+}
+
+/* OPTION B — uploaded photo, slow living pan.
+   This lives on a fixed pseudo-element (not background-attachment:fixed
+   on body) because "fixed" attachment is unreliable on mobile browsers —
+   it was the cause of the gray bars above/below on small screens.
+   background-size:cover guarantees full-bleed coverage on any viewport;
+   the 1.15 scale gives headroom so the slow pan never reveals an edge. */
+body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background-image: url('./background.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.15);
+  transform-origin: center;
+  animation: sky-pan 60s ease-in-out infinite alternate;
+}
+
+@keyframes sky-pan {
+  0%   { background-position: 30% 35%; }
+  100% { background-position: 70% 65%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before { animation: none; background-position: center; }
+}
+
+/* soft scrim so the busiest, brightest parts of the photo never
+   fight with text/icon contrast — subtle, not a filter over the art */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(10, 20, 35, 0.18) 0%, rgba(10, 20, 35, 0.04) 25%, rgba(10, 20, 35, 0.10) 100%);
+}
+
+/* ---------------------------------------------------------
+   Typography
+   --------------------------------------------------------- */
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand,
+.display-font {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-shadow: var(--glass-text-shadow);
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-shadow: var(--glass-text-shadow);
+}
+
+/* numeric sensor readouts get the instrument-panel mono face */
+.readout {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  text-shadow: var(--glass-text-shadow);
+}
+
+.readout-lg {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: clamp(2.1rem, 6vw, 2.75rem);
+  line-height: 1;
+  color: var(--ink);
+  text-shadow: var(--glass-text-shadow);
+}
+
+/* ---------------------------------------------------------
+   Glass surfaces
+   --------------------------------------------------------- */
+
+.glass-navbar {
+  background: var(--glass-bg-strong) !important;
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border-bottom: 1px solid var(--glass-border);
+  box-shadow: 0 4px 24px rgba(18, 48, 71, 0.10);
+}
+
+.glass-navbar .navbar-brand {
+  color: var(--ink) !important;
+}
+
+.glass-hero {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 1.75rem;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid var(--glass-border);
+  border-radius: 1.5rem;
+  box-shadow: var(--glass-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 44px rgba(18, 48, 71, 0.20);
+}
+
+.glass-alert {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
+}
+
+.glass-footer {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border-top: 1px solid var(--glass-border);
+  color: var(--ink);
+}
+
+.glass-footer a {
+  color: var(--ink) !important;
+}
+
+/* condition icon in the "Estado" card — scales with viewport instead of
+   a fixed 48px, so it doesn't look lost once the card goes full-width
+   on mobile (xs=12) */
+.condition-icon {
+  width: clamp(56px, 16vw, 76px);
+  height: auto;
+}
+
+/* icon chip — small frosted circle behind each card's icon */
+.icon-chip {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--glass-border);
+}
+
+/* status badge, glass pill instead of flat bootstrap badge */
+.glass-badge {
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-badge.is-online { color: #0B6B4F; }
+.glass-badge.is-offline { color: #9A5B00; }
+
+/* live-data pulse ring, used on the temperature icon to signal
+   the station is streaming (respects reduced-motion) */
+.live-pulse {
+  position: relative;
+}
+
+.live-pulse::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-coral);
+  opacity: 0;
+  animation: pulse-ring 2.4s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(0.85); opacity: 0.55; }
+  70%  { transform: scale(1.35); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-pulse::after { animation: none; display: none; }
+}
+
+/* muted text sits softer on glass than bootstrap's default */
+.glass-card .text-muted,
+.glass-hero .text-muted {
+  color: var(--ink-soft) !important;
+}
+
+/* loading spinner container also gets a glass treatment */
+.glass-loading {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 1.75rem;
+  padding: 2.5rem 1.5rem;
+  box-shadow: var(--glass-shadow);
+}

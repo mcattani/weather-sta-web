@@ -6,21 +6,19 @@ export default function Footer() {
     const appVersion = import.meta.env.VITE_APP_VERSION || packageJson.version;
 
     return (
-        <footer className="bg-dark text-white text-center py-3 mt-5">
+        <footer className="glass-footer text-center py-3 mt-5">
             <Container>
-                <hr />
-                <p className="mb-0">
+                <p className="mb-0 small">
                     2026 🄯 -{" "}
                     <a
                         href="https://thenerdyapprentice.blogspot.com/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-white"
-                        style={{ textDecoration: "none" }}
+                        style={{ textDecoration: "none", fontWeight: 600 }}
                     >
                         The Nerdy Apprentice{" "}
                         <FaBlogger
-                            size={18}
+                            size={16}
                             style={{ verticalAlign: "middle" }}
                         />
                     </a>{" "}
