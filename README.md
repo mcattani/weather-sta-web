@@ -4,6 +4,7 @@
 ![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite)
 ![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?logo=bootstrap)
+![Theme](https://img.shields.io/badge/Design-Liquid%20Glass-00B4D8)
 ![License](https://img.shields.io/badge/License-GPL%203.0-blue)
 ![Status](https://img.shields.io/badge/Status-En%20construcci%C3%B3n-yellow)
 
@@ -18,21 +19,23 @@ Weather Station Web es una aplicación web construida con React y Vite que muest
 - Firebase Firestore, donde se almacenan los datos recibidos de la estación.
 - WeatherAPI, utilizada para complementar la vista con información meteorológica externa como estado del clima, sensación térmica, viento y UV.
 
-La idea es convertirlo en un dashboard limpio, moderno y responsivo.
+El proyecto cuenta con una interfaz moderna basada en la estética **"Liquid Glass"**, adaptable a cualquier resolución de pantalla y optimizada mediante componentes modulares en React.
 
 ## Características actuales
 
-- Panel principal con diseño responsivo.
-- Lectura del último dato registrado desde Firestore.
-- Mostrar estado de la estación según la disponibilidad de datos.
-- Visualización de métricas como temperatura, humedad y presión.
+- Interfaz moderna basada en diseño **"Liquid Glass"** con superficies vidriadas traslúcidas.
+- Fondo dinámico animado con aceleración por hardware (GPU) adaptado a múltiples resoluciones.
+- Componente modular reutilizable (`GlassCard`) para el renderizado consistente de tarjetas métricas.
+- Lectura del último dato registrado en tiempo real desde Firestore.
+- Indicador visual de estado online/offline de la estación.
+- Visualización de métricas de sensores (temperatura, humedad, presión).
 - Integración con WeatherAPI para mostrar datos externos como:
-  - estado del clima
-  - sensación térmica
-  - viento
-  - índice UV
+  - Estado del clima
+  - Sensación térmica
+  - Viento y dirección
+  - Índice UV
 - Manejo de estados de carga y errores.
-- Diseño pensado para verse bien en móvil y escritorio.
+- Diseño totalmente responsivo para móviles, tablets y monitores multipantalla.
 
 ## Tecnologías usadas
 
@@ -49,6 +52,9 @@ La idea es convertirlo en un dashboard limpio, moderno y responsivo.
 ```text
 src/
 ├── assets/
+│   └── glass-theme.css
+├── components/
+│   └── GlassCard.jsx
 ├── firebase.js
 ├── layout/
 ├── pages/
@@ -115,5 +121,3 @@ Para más detalles sobre este proyecto y otros contenidos relacionados, visita:
 ## Licencia
 
 Este proyecto está licenciado bajo GPL-3.0.
-
-
