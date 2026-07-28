@@ -1,5 +1,5 @@
 /* =========================================================
-   Weather STA — Tema "Liquid Glass"
+   Weather STA — Tema "Liquid Glass" (2026 🄯 IA -> Claude & Gemini)
    Panel tipo dashboard de instrumentos, flotando sobre un
    cielo despejado.
    ========================================================= */
@@ -17,20 +17,20 @@
   --accent-coral: #FF7A59;
   --accent-teal: #17B4A6;
 
-  /* --- superficies de vidrio ---
+  /* --- Superficies de Vidrio ---
      Ajustá estos dos valores a gusto: bajalos para paneles más
      transparentes, subilos si el texto empieza a perderse contra
      la foto. El text-shadow de abajo es lo que sostiene la lectura
      del texto incluso con el vidrio muy transparente (como ahora,
      en 0.10 / 0.20). */
   --glass-bg: rgba(255, 255, 255, 0.10);
-  --glass-bg-strong: rgba(255, 255, 255, 0.20);
+  --glass-bg-strong: rgba(255, 255, 255, 0.15);
   --glass-border: rgba(255, 255, 255, 0.55);
   --glass-shadow: 0 12px 36px rgba(18, 48, 71, 0.20);
   --glass-blur: 22px;
   --glass-text-shadow: 0 1px 12px rgba(255, 255, 255, 0.55);
 
-  /* --- tipografía --- */
+  /* --- Tipografía --- */
   --font-display: 'Space Grotesk', system-ui, sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -55,10 +55,7 @@ body {
 /* Fondo de cielo (foto), con paneo lento.
    Va en position:fixed (no absolute) para que quede anclado al
    viewport sin importar cuánto mida el body — con "absolute" el
-   pseudo-elemento se estira al alto real del documento, así que en
-   pantallas donde el body es más alto que la ventana, el paneo se
-   reparte en esa altura extra y se nota mucho menos (probablemente
-   la razón por la que en la PC casi no se percibía el movimiento).
+   pseudo-elemento se estira al alto real del documento.
    Con "fixed" el recorrido del paneo siempre se ve completo, sin
    importar el tamaño de la página.
    background-size:cover asegura que la imagen tape siempre toda la
@@ -99,7 +96,7 @@ body::before {
   body::before { animation: none; transform: scale(1.0); }
 }
 
-/* velo suave para que las zonas más claras/saturadas de la foto no
+/* Velo suave para que las zonas más claras/saturadas de la foto no
    compitan con el contraste del texto — sutil, no tapa la imagen */
 body::after {
   content: "";
@@ -114,7 +111,7 @@ body::after {
    Tipografía
    --------------------------------------------------------- */
 
-h1, h2, h3, h4, h5, h6,
+   h1, h2, h3, h4, h5, h6,
 .navbar-brand,
 .display-font {
   font-family: var(--font-display);
@@ -133,12 +130,8 @@ h1, h2, h3, h4, h5, h6,
   text-shadow: var(--glass-text-shadow);
 }
 
-/* Los valores numéricos de los sensores usan la fuente mono, para que
-   se sientan como la lectura de un instrumento real.
-   .readout y .readout-lg comparten exactamente el mismo tamaño: así
-   da lo mismo si en el JSX el número está en un <h1> o un <h3>, o si
-   una tarjeta usa una clase u otra — el resultado visual es idéntico.
-   Esto es lo que empareja Viento y UV con Temperatura y Humedad. */
+/* Los valores numéricos de los sensores usan la fuente mono, para que se
+   sientan como la lectura de un instrumento real.*/
 .readout,
 .readout-lg {
   font-family: var(--font-mono);
@@ -197,10 +190,7 @@ h1, h2, h3, h4, h5, h6,
   box-shadow: 0 18px 44px rgba(18, 48, 71, 0.20);
 }
 
-/* Centra todo el contenido de cada tarjeta (número, unidad y texto
-   secundario), para que Temperatura, Humedad, Viento y UV se vean
-   consistentes entre sí. La fila de arriba (eyebrow + ícono) no se
-   ve afectada porque se posiciona con flexbox, no con text-align. */
+/* Centra todo el contenido la tarjeta */
 .glass-card .card-body {
   text-align: center;
 }
@@ -226,14 +216,13 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* Ícono de condición (WeatherAPI) en la tarjeta "Estado" — escala
-   con el viewport en vez de tener un ancho fijo, y ahora un poco
-   más grande para que tenga más presencia dentro de la tarjeta. */
+   con el viewport en vez de tener un ancho fijo. */
 .condition-icon {
   width: clamp(64px, 20vw, 96px);
   height: auto;
 }
 
-/* icon chip — pequeño círculo de vidrio detrás de cada ícono */
+/* Icon chip — pequeño círculo de vidrio detrás de cada ícono */
 .icon-chip {
   width: 42px;
   height: 42px;
@@ -245,7 +234,7 @@ h1, h2, h3, h4, h5, h6,
   border: 1px solid var(--glass-border);
 }
 
-/* badge de estado, pill de vidrio en lugar del badge plano de bootstrap */
+/* Badge de estado, pill de vidrio en lugar del badge plano de bootstrap */
 .glass-badge {
   background: var(--glass-bg-strong);
   border: 1px solid var(--glass-border);
@@ -260,7 +249,7 @@ h1, h2, h3, h4, h5, h6,
 .glass-badge.is-offline { color: #9A5B00; }
 
 /* Animación de "dato en vivo", usada en los íconos que vienen del
-   ESP (temperatura, humedad, presión) para indicar que la estación
+   ESP32 (temperatura, humedad, presión) para indicar que la estación
    está transmitiendo en tiempo real (respeta prefers-reduced-motion) */
 .live-pulse {
   position: relative;
@@ -286,14 +275,14 @@ h1, h2, h3, h4, h5, h6,
   .live-pulse::after { animation: none; display: none; }
 }
 
-/* el texto "muted" se ve más suave sobre el vidrio que el gris
+/* El texto "muted" se ve más suave sobre el vidrio que el gris
    default de bootstrap */
 .glass-card .text-muted,
 .glass-hero .text-muted {
   color: var(--ink-soft) !important;
 }
 
-/* el contenedor del spinner de carga también tiene estilo de panel */
+/* El contenedor del spinner de carga también tiene estilo de panel */
 .glass-loading {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
