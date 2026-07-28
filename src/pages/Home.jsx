@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
 import {
     ThermometerHalf,
     DropletHalf,
@@ -13,6 +13,7 @@ import {
 
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
+import GlassCard from '../components/GlassCard';
 
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const CITY = 'Buenos Aires';
@@ -172,167 +173,71 @@ export default function Home() {
             <Row className="g-3 g-lg-4">
                 {/* Estado general del clima */}
                 <Col xs={12} sm={6} lg={3}>
-                    <Card className="glass-card h-100 border-0">
-                        <Card.Body className="d-flex flex-column justify-content-between p-3">
-                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                <span className="eyebrow">Estado</span>
-                                <span className="icon-chip p-1">
-                                    {weatherApiData?.current?.condition?.icon ? (
-                                        <img
-                                            src={weatherApiData.current.condition.icon}
-                                            alt={weatherApiData.current.condition.text}
-                                            width={32}
-                                            height={32}
-                                        />
-                                    ) : (
-                                        <CloudSun size={20} style={{ color: '#2F8FD1' }} />
-                                    )}
-                                </span>
-                            </div>
-                            <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center py-2 px-1">
-                                {weatherApiData?.current ? (
-                                    <>
-                                        <h2 className="fs-6 fw-semibold mb-1 text-wrap" style={{ lineHeight: 1.25 }}>
-                                            {weatherApiData.current.condition.text}
-                                        </h2>
-                                        <small className="text-muted d-block">Condición del clima</small>
-                                    </>
-                                ) : (
-                                    <small className="text-muted d-block">Sin datos del clima</small>
-                                )}
-                            </div>
-                        </Card.Body>
-                    </Card>
+                    <GlassCard
+                        title="Estado"
+                        icon={<CloudSun size={20} style={{ color: '#2F8FD1' }} />}
+                        conditionIcon={weatherApiData?.current?.condition?.icon}
+                        value={weatherApiData?.current?.condition?.text}
+                        subtitle="Condición del clima"
+                        isCondition
+                    />
                 </Col>
 
                 {/* Temperatura */}
                 <Col xs={12} sm={6} lg={3}>
-                    <Card className="glass-card h-100 border-0">
-                        <Card.Body className="d-flex flex-column justify-content-between p-3">
-                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                <span className="eyebrow">Temperatura</span>
-                                <span className="icon-chip live-pulse">
-                                    <ThermometerHalf size={20} style={{ color: 'var(--accent-coral)' }} />
-                                </span>
-                            </div>
-                            <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center py-2 px-1">
-                                <div className="readout-lg mb-1">
-                                    {sensorData?.temperatura != null ? sensorData.temperatura.toFixed(1) : '--'}
-                                    <span className="readout-unit"> °C</span>
-                                </div>
-                                {weatherApiData?.current ? (
-                                    <small className="text-muted d-block text-truncate w-100">
-                                        Sensación: {weatherApiData.current.feelslike_c}°C
-                                    </small>
-                                ) : (
-                                    <small className="text-muted d-block">Sin datos de sensación</small>
-                                )}
-                            </div>
-                        </Card.Body>
-                    </Card>
+                    <GlassCard
+                        title="Temperatura"
+                        icon={<ThermometerHalf size={20} style={{ color: 'var(--accent-coral)' }} />}
+                        value={sensorData?.temperatura != null ? sensorData.temperatura.toFixed(1) : null}
+                        unit="°C"
+                        subtitle={weatherApiData?.current ? `Sensación: ${weatherApiData.current.feelslike_c}°C` : 'Sin datos de sensación'}
+                        isLive
+                    />
                 </Col>
 
                 {/* Humedad */}
                 <Col xs={12} sm={6} lg={3}>
-                    <Card className="glass-card h-100 border-0">
-                        <Card.Body className="d-flex flex-column justify-content-between p-3">
-                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                <span className="eyebrow">Humedad</span>
-                                <span className="icon-chip live-pulse">
-                                    <DropletHalf size={20} style={{ color: 'var(--accent-teal)' }} />
-                                </span>
-                            </div>
-                            <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center py-2 px-1">
-                                <div className="readout-lg mb-1">
-                                    {sensorData?.humedad != null ? sensorData.humedad.toFixed(1) : '--'}
-                                    <span className="readout-unit"> %</span>
-                                </div>
-                                {weatherApiData?.current ? (
-                                    <small className="text-muted d-block text-truncate w-100">
-                                        Punto rocío: {weatherApiData.current.dewpoint_c ?? '--'}°C
-                                    </small>
-                                ) : (
-                                    <small className="text-muted d-block">Sin datos de rocío</small>
-                                )}
-                            </div>
-                        </Card.Body>
-                    </Card>
+                    <GlassCard
+                        title="Humedad"
+                        icon={<DropletHalf size={20} style={{ color: 'var(--accent-teal)' }} />}
+                        value={sensorData?.humedad != null ? sensorData.humedad.toFixed(1) : null}
+                        unit="%"
+                        subtitle={weatherApiData?.current ? `Punto rocío: ${weatherApiData.current.dewpoint_c ?? '--'}°C` : 'Sin datos de rocío'}
+                        isLive
+                    />
                 </Col>
 
                 {/* Presión atmosférica */}
                 <Col xs={12} sm={6} lg={3}>
-                    <Card className="glass-card h-100 border-0">
-                        <Card.Body className="d-flex flex-column justify-content-between p-3">
-                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                <span className="eyebrow">Presión</span>
-                                <span className="icon-chip live-pulse">
-                                    <Speedometer2 size={20} style={{ color: '#C98A1A' }} />
-                                </span>
-                            </div>
-                            <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center py-2 px-1">
-                                <div className="readout-lg mb-1">
-                                    {sensorData?.presion != null ? sensorData.presion.toFixed(1) : '--'}
-                                    <span className="readout-unit"> hPa</span>
-                                </div>
-                                <small className="text-muted d-block text-truncate w-100">Presión barométrica</small>
-                            </div>
-                        </Card.Body>
-                    </Card>
+                    <GlassCard
+                        title="Presión"
+                        icon={<Speedometer2 size={20} style={{ color: '#C98A1A' }} />}
+                        value={sensorData?.presion != null ? sensorData.presion.toFixed(1) : null}
+                        unit="hPa"
+                        subtitle="Presión barométrica"
+                        isLive
+                    />
                 </Col>
 
                 {/* Viento */}
                 <Col xs={12} sm={6} lg={3}>
-                    <Card className="glass-card h-100 border-0">
-                        <Card.Body className="d-flex flex-column justify-content-between p-3">
-                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                <span className="eyebrow">Viento</span>
-                                <span className="icon-chip">
-                                    <Wind size={20} style={{ color: '#6F5FD1' }} />
-                                </span>
-                            </div>
-                            <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center py-2 px-1">
-                                {weatherApiData?.current ? (
-                                    <>
-                                        <div className="readout-lg mb-1">
-                                            {weatherApiData.current.wind_kph}
-                                            <span className="readout-unit"> km/h</span>
-                                        </div>
-                                        <small className="text-muted d-block text-truncate w-100">
-                                            Dirección: {weatherApiData.current.wind_dir}
-                                        </small>
-                                    </>
-                                ) : (
-                                    <small className="text-muted d-block">Sin datos de viento</small>
-                                )}
-                            </div>
-                        </Card.Body>
-                    </Card>
+                    <GlassCard
+                        title="Viento"
+                        icon={<Wind size={20} style={{ color: '#6F5FD1' }} />}
+                        value={weatherApiData?.current ? weatherApiData.current.wind_kph : null}
+                        unit="km/h"
+                        subtitle={weatherApiData?.current ? `Dirección: ${weatherApiData.current.wind_dir}` : 'Sin datos de viento'}
+                    />
                 </Col>
 
                 {/* UV */}
                 <Col xs={12} sm={6} lg={3}>
-                    <Card className="glass-card h-100 border-0">
-                        <Card.Body className="d-flex flex-column justify-content-between p-3">
-                            <div className="d-flex justify-content-between align-items-center mb-2">
-                                <span className="eyebrow">Índice UV</span>
-                                <span className="icon-chip">
-                                    <Sun size={20} style={{ color: '#E0A400' }} />
-                                </span>
-                            </div>
-                            <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center py-2 px-1">
-                                {weatherApiData?.current ? (
-                                    <>
-                                        <div className="readout-lg mb-1">{weatherApiData.current.uv}</div>
-                                        <small className="text-muted d-block text-truncate w-100">
-                                            Nivel: {uvNivel}
-                                        </small>
-                                    </>
-                                ) : (
-                                    <small className="text-muted d-block">Sin datos de UV</small>
-                                )}
-                            </div>
-                        </Card.Body>
-                    </Card>
+                    <GlassCard
+                        title="Índice UV"
+                        icon={<Sun size={20} style={{ color: '#E0A400' }} />}
+                        value={weatherApiData?.current ? weatherApiData.current.uv : null}
+                        subtitle={weatherApiData?.current ? `Nivel: ${uvNivel}` : 'Sin datos de UV'}
+                    />
                 </Col>
             </Row>
 
