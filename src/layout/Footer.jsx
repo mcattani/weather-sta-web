@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { FaBlogger } from "react-icons/fa";
+import { JournalText } from "react-bootstrap-icons";
 import packageJson from "../../package.json";
 
 export default function Footer() {
@@ -17,7 +17,7 @@ export default function Footer() {
                         style={{ textDecoration: "none", fontWeight: 600 }}
                     >
                         The Nerdy Apprentice{" "}
-                        <FaBlogger
+                        <JournalText
                             size={16}
                             style={{ verticalAlign: "middle" }}
                         />

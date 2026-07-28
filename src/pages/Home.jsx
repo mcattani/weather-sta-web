@@ -108,7 +108,7 @@ export default function Home() {
                 setWeatherError("Error al conectar con la API de Weather.");
                 setWeatherStatus('error');
             });
-    }, [WEATHER_API_KEY, CITY]);
+    }, []);
 
     // Pantalla de carga inicial mientras llegan los datos.
     if (loading) {
