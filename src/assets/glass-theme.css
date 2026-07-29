@@ -172,7 +172,8 @@ body::after {
 
 /* Texto para la condición meteorológica (ej: "Soleado", "Parcialmente nublado").
    El valor máximo está limitado a 1.5rem (~24px) para que frases largas 
-   en escritorio no se vean gigantes ni deformen la tarjeta. */
+   en escritorio no se vean gigantes ni deformen la tarjeta.
+   Se usa text-transform: none para respetar la gramática natural en español (primera letra mayúscula). */
 .condition-readout {
   font-family: var(--font-display);
   font-size: clamp(1.45rem, 4.5vw, 1.5rem);
@@ -180,7 +181,7 @@ body::after {
   line-height: 1.15;
   color: var(--ink);
   text-shadow: var(--glass-text-shadow);
-  text-transform: capitalize;
+  text-transform: none;
 }
 
 /* ---------------------------------------------------------
