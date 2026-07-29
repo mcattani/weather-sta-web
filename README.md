@@ -5,12 +5,13 @@
 ![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?logo=bootstrap)
 ![Theme](https://img.shields.io/badge/Design-Liquid%20Glass-00B4D8)
+![AI Assisted](https://img.shields.io/badge/Design-AI%20Assisted-purple)
 ![License](https://img.shields.io/badge/License-GPL%203.0-blue)
 ![Status](https://img.shields.io/badge/Status-En%20construcci%C3%B3n-yellow)
 
 Una web de panel de control para visualizar datos de una estación meteorológica en tiempo real (con datos y sensores conectados a un ESP32 C3 Mini). 
 
-> Este proyecto aún está en construcción
+> Este proyecto aún está en construcción. Forma parte de un proyecto más amplio e integral que abarca el hardware físico (un microcontrolador ESP32 C3 Mini y sus sensores meteorológicos). El repositorio correspondiente al código del firmware y circuitos del ESP32 está actualmente en desarrollo y se vinculará a esta documentación próximamente.
 
 ## Descripción general
 
@@ -20,6 +21,10 @@ Weather Station Web es una aplicación web construida con React y Vite que muest
 - WeatherAPI, utilizada para complementar la vista con información meteorológica externa como estado del clima, sensación térmica, viento y UV.
 
 El proyecto cuenta con una interfaz moderna basada en la estética **"Liquid Glass"**, adaptable a cualquier resolución de pantalla y optimizada mediante componentes modulares en React.
+
+## Diseño e Inteligencia Artificial
+
+La identidad gráfica y el estilo visual de esta aplicación (denominado **"Liquid Glass"**), que incluye las tarjetas traslúcidas estilo *glassmorphism*, la paleta de colores, la tipografía y las animaciones de fondo, fueron **diseñados y generados con la asistencia de Inteligencia Artificial (IA)**.
 
 ## Características actuales
 
@@ -116,7 +121,7 @@ Actualmente no hay un despliegue publicado todavía. La idea es publicarlo pront
 ## Más Información
 
 Para más detalles sobre este proyecto y otros contenidos relacionados, visita:
-- 🔗 [The Nerdy Apprentice Blog](https://thenerdyapprentice.blogspot.com/)
+- The Nerdy Apprentice Blog: https://thenerdyapprentice.blogspot.com/
 
 ## Licencia
 
