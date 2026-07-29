@@ -78,7 +78,7 @@ Requisitos:
 Pasos:
 
 ```bash
-git clone <tu-repo-url>
+git clone https://github.com/mcattani/weather-sta-web.git
 cd weather_sta_web
 npm install
 ```
