@@ -22,8 +22,8 @@
      transparentes, subilos si el texto empieza a perderse contra
      la foto. El text-shadow de abajo es lo que sostiene la lectura
      del texto incluso con el vidrio muy transparente. */
-  --glass-bg: rgba(255, 255, 255, 0.22);
-  --glass-bg-strong: rgba(255, 255, 255, 0.35);
+  --glass-bg: rgba(255, 255, 255, 0.20);
+  --glass-bg-strong: rgba(255, 255, 255, 0.10);
   --glass-border: rgba(255, 255, 255, 0.55);
   --glass-shadow: 0 12px 36px rgba(18, 48, 71, 0.20);
   --glass-blur: 22px;
