@@ -202,7 +202,7 @@ export default function Home() {
                         icon={<DropletHalf size={20} style={{ color: 'var(--accent-teal)' }} />}
                         value={sensorData?.humedad != null ? sensorData.humedad.toFixed(1) : null}
                         unit="%"
-                        subtitle={weatherApiData?.current ? `Punto rocío: ${weatherApiData.current.dewpoint_c ?? '--'}°C` : 'Sin datos de rocío'}
+                        subtitle={weatherApiData?.current ? `Punto de rocío: ${weatherApiData.current.dewpoint_c ?? '--'}°C` : 'Sin datos de rocío'}
                         isLive
                     />
                 </Col>
