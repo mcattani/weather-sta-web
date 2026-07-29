@@ -85,6 +85,19 @@ body::before {
   }
 }
 
+/* En dispositivos móviles, la barra de navegación del navegador cambia la altura del viewport al hacer scroll.
+   Fijamos la altura y forzamos aceleración por hardware (GPU) para evitar que el fondo se salte o re-centre. */
+@media (max-width: 767px) {
+  body::before {
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    transform: translateZ(0);
+  }
+}
+
 @keyframes sky-pan {
   0% {
     transform: scale(1.25) translate(-2.5%, -1.8%);
