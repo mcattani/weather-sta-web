@@ -25,13 +25,7 @@ export default function GlassCard({
                 </div>
                 <div className="d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center py-2 px-1">
                     {isCondition ? (
-                        <h2
-                            className="display-font fw-bold mb-1 text-wrap text-capitalize"
-                            style={{
-                                fontSize: 'clamp(1.45rem, 4.5vw, 2.0rem)',
-                                lineHeight: 1.15
-                            }}
-                        >
+                        <h2 className="condition-readout mb-1 text-wrap">
                             {value || 'Sin datos'}
                         </h2>
                     ) : (

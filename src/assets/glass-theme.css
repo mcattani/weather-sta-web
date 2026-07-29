@@ -170,6 +170,19 @@ body::after {
   color: var(--ink-soft);
 }
 
+/* Texto para la condición meteorológica (ej: "Soleado", "Parcialmente nublado").
+   El valor máximo está limitado a 1.5rem (~24px) para que frases largas 
+   en escritorio no se vean gigantes ni deformen la tarjeta. */
+.condition-readout {
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 4.5vw, 1.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+  text-shadow: var(--glass-text-shadow);
+  text-transform: capitalize;
+}
+
 /* ---------------------------------------------------------
    Superficies de vidrio
    --------------------------------------------------------- */
