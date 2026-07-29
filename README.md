@@ -116,7 +116,7 @@ Ejecuta ESLint para revisar el código.
 
 ## Despliegue
 
-Actualmente no hay un despliegue publicado todavía. La idea es publicarlo pronto en Vercel y dejarlo accesible desde un enlace directo.
+[https://weather-sta-web.vercel.app/](https://weather-sta-web.vercel.app/)
 
 ## Más Información
 
