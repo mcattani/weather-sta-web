@@ -85,19 +85,21 @@ body::before {
   }
 }
 
-/* En dispositivos móviles, la barra de navegación del navegador cambia la altura del viewport al hacer scroll.
-   Ampliamos los márgenes por arriba y abajo (-60px / -80px) y fijamos la posición arriba para que al ocultarse o desplegarse 
-   la barra de URL en Brave/Chrome, la imagen ya cubra el lienzo sobrante sin provocar ningún salto o re-dibujado. */
+/* En dispositivos móviles (como Samsung A16 en Brave), la barra de URL altera la altura del viewport al hacer scroll.
+   Fijamos la dimensión a 110lvh (sobrenivel constante sin cambios) y aceleración por GPU (translateZ(0)) para que 
+   al ocultarse o mostrarse la barra de URL, el fondo no tenga que recalcular background-size eliminando el redibujado. */
 @media (max-width: 767px) {
   body::before {
-    top: -60px;
-    bottom: -80px;
+    position: fixed;
+    top: -5vh;
     left: 0;
-    right: 0;
-    width: auto;
-    height: auto;
-    background-position: center top;
+    width: 100vw;
+    height: 110vh;
+    height: 110lvh;
+    background-size: cover;
+    background-position: center center;
     transform: translateZ(0);
+    animation-duration: 18s;
   }
 }
 
