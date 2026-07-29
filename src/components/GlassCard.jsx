@@ -28,7 +28,7 @@ export default function GlassCard({
                         <h2
                             className="display-font fw-bold mb-1 text-wrap text-capitalize"
                             style={{
-                                fontSize: 'clamp(1.15rem, 2.2vw, 1.65rem)',
+                                fontSize: 'clamp(1.45rem, 4.5vw, 2.0rem)',
                                 lineHeight: 1.15
                             }}
                         >

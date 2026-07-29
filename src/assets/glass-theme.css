@@ -86,14 +86,17 @@ body::before {
 }
 
 /* En dispositivos móviles, la barra de navegación del navegador cambia la altura del viewport al hacer scroll.
-   Fijamos la altura y forzamos aceleración por hardware (GPU) para evitar que el fondo se salte o re-centre. */
+   Ampliamos los márgenes por arriba y abajo (-60px / -80px) y fijamos la posición arriba para que al ocultarse o desplegarse 
+   la barra de URL en Brave/Chrome, la imagen ya cubra el lienzo sobrante sin provocar ningún salto o re-dibujado. */
 @media (max-width: 767px) {
   body::before {
-    top: 0;
+    top: -60px;
+    bottom: -80px;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh;
+    right: 0;
+    width: auto;
+    height: auto;
+    background-position: center top;
     transform: translateZ(0);
   }
 }
