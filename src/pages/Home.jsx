@@ -190,7 +190,7 @@ export default function Home() {
                         icon={<ThermometerHalf size={20} style={{ color: 'var(--accent-coral)' }} />}
                         value={sensorData?.temperatura != null ? sensorData.temperatura.toFixed(1) : null}
                         unit="°C"
-                        subtitle={weatherApiData?.current ? `Sensación: ${weatherApiData.current.feelslike_c}°C` : 'Sin datos de sensación'}
+                        subtitle={weatherApiData?.current ? `Sensación térmica: ${weatherApiData.current.feelslike_c}°C` : 'Sin datos de sensación'}
                         isLive
                     />
                 </Col>
