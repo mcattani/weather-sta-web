@@ -150,7 +150,7 @@ export default function Home() {
     return (
         <>
             <SEO
-                title="Weather STA - TNA"
+                title="Home"
                 description="Datos meteorológicos actuales obtenidos del ESP32 WeatherStation y Weather API"
                 keywords="panel en vivo, datos meteorológicos, Buenos Aires, Weather STA, Weather API, ESP32, WeatherStation"
             />
