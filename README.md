@@ -51,6 +51,7 @@ La identidad gráfica y el estilo visual de esta aplicación (denominado **"Liqu
 - Firebase Firestore
 - react-bootstrap-icons
 - ESLint
+- React Helmet Async
 
 ## Estructura del proyecto
 
