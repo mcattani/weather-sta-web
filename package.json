@@ -16,7 +16,8 @@
     "react": "^19.2.7",
     "react-bootstrap": "^2.10.10",
     "react-bootstrap-icons": "^1.11.6",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "react-helmet-async": "^3.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

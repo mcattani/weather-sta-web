@@ -10,6 +10,7 @@ import {
     CloudSun,
     Sun
 } from 'react-bootstrap-icons';
+import SEO from '../components/SEO';
 
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -147,100 +148,107 @@ export default function Home() {
 
     // Render principal del dashboard con valores de respaldo si alguna fuente falla.
     return (
-        <Container className="mb-5 px-2 px-md-3">
-            {alertMessage && (
-                <Alert variant={alertVariant} className="glass-alert mb-3 rounded-4 border-0">
-                    {alertMessage}
-                </Alert>
-            )}
+        <>
+            <SEO
+                title="Weather STA - TNA"
+                description="Datos meteorológicos actuales obtenidos del ESP32 WeatherStation y Weather API"
+                keywords="panel en vivo, datos meteorológicos, Buenos Aires, Weather STA, Weather API, ESP32, WeatherStation"
+            />
+            <Container className="mb-5 px-2 px-md-3">
+                {alertMessage && (
+                    <Alert variant={alertVariant} className="glass-alert mb-3 rounded-4 border-0">
+                        {alertMessage}
+                    </Alert>
+                )}
 
-            {/* Cabecera */}
-            <div className="glass-hero d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2 p-3 p-md-4">
-                <div>
-                    <span className="eyebrow d-block mb-1">Panel en vivo</span>
-                    <h2 className="fw-bold mb-1">Condiciones Actuales</h2>
-                    <small className="text-muted d-flex flex-wrap align-items-center gap-1">
-                        <GeoAltFill size={14} /> {CITY}
-                        <span className="mx-1">•</span>
-                        <ClockHistory size={14} /> Última Lectura: {ultimaLectura}
-                    </small>
+                {/* Cabecera */}
+                <div className="glass-hero d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2 p-3 p-md-4">
+                    <div>
+                        <span className="eyebrow d-block mb-1">Panel en vivo</span>
+                        <h2 className="fw-bold mb-1">Condiciones Actuales</h2>
+                        <small className="text-muted d-flex flex-wrap align-items-center gap-1">
+                            <GeoAltFill size={14} /> {CITY}
+                            <span className="mx-1">•</span>
+                            <ClockHistory size={14} /> Última Lectura: {ultimaLectura}
+                        </small>
+                    </div>
+                    <span className={`glass-badge ${badgeStatusClass} px-3 py-2 rounded-pill`}>
+                        {estadoEstacion}
+                    </span>
                 </div>
-                <span className={`glass-badge ${badgeStatusClass} px-3 py-2 rounded-pill`}>
-                    {estadoEstacion}
-                </span>
-            </div>
 
-            <Row className="g-3 g-lg-4">
-                {/* Estado general del clima */}
-                <Col xs={12} sm={6} lg={3}>
-                    <GlassCard
-                        title="Estado"
-                        icon={<CloudSun size={20} style={{ color: '#2F8FD1' }} />}
-                        conditionIcon={weatherApiData?.current?.condition?.icon}
-                        value={weatherApiData?.current?.condition?.text}
-                        subtitle="Condición del clima"
-                        isCondition
-                    />
-                </Col>
+                <Row className="g-3 g-lg-4">
+                    {/* Estado general del clima */}
+                    <Col xs={12} sm={6} lg={3}>
+                        <GlassCard
+                            title="Estado"
+                            icon={<CloudSun size={20} style={{ color: '#2F8FD1' }} />}
+                            conditionIcon={weatherApiData?.current?.condition?.icon}
+                            value={weatherApiData?.current?.condition?.text}
+                            subtitle="Condición del clima"
+                            isCondition
+                        />
+                    </Col>
 
-                {/* Temperatura */}
-                <Col xs={12} sm={6} lg={3}>
-                    <GlassCard
-                        title="Temperatura"
-                        icon={<ThermometerHalf size={20} style={{ color: 'var(--accent-coral)' }} />}
-                        value={sensorData?.temperatura != null ? sensorData.temperatura.toFixed(1) : null}
-                        unit="°C"
-                        subtitle={weatherApiData?.current ? `Sensación térmica: ${weatherApiData.current.feelslike_c}°C` : 'Sin datos de sensación'}
-                        isLive
-                    />
-                </Col>
+                    {/* Temperatura */}
+                    <Col xs={12} sm={6} lg={3}>
+                        <GlassCard
+                            title="Temperatura"
+                            icon={<ThermometerHalf size={20} style={{ color: 'var(--accent-coral)' }} />}
+                            value={sensorData?.temperatura != null ? sensorData.temperatura.toFixed(1) : null}
+                            unit="°C"
+                            subtitle={weatherApiData?.current ? `Sensación térmica: ${weatherApiData.current.feelslike_c}°C` : 'Sin datos de sensación'}
+                            isLive
+                        />
+                    </Col>
 
-                {/* Humedad */}
-                <Col xs={12} sm={6} lg={3}>
-                    <GlassCard
-                        title="Humedad"
-                        icon={<DropletHalf size={20} style={{ color: 'var(--accent-teal)' }} />}
-                        value={sensorData?.humedad != null ? sensorData.humedad.toFixed(1) : null}
-                        unit="%"
-                        subtitle={weatherApiData?.current ? `Punto de rocío: ${weatherApiData.current.dewpoint_c ?? '--'}°C` : 'Sin datos de rocío'}
-                        isLive
-                    />
-                </Col>
+                    {/* Humedad */}
+                    <Col xs={12} sm={6} lg={3}>
+                        <GlassCard
+                            title="Humedad"
+                            icon={<DropletHalf size={20} style={{ color: 'var(--accent-teal)' }} />}
+                            value={sensorData?.humedad != null ? sensorData.humedad.toFixed(1) : null}
+                            unit="%"
+                            subtitle={weatherApiData?.current ? `Punto de rocío: ${weatherApiData.current.dewpoint_c ?? '--'}°C` : 'Sin datos de rocío'}
+                            isLive
+                        />
+                    </Col>
 
-                {/* Presión atmosférica */}
-                <Col xs={12} sm={6} lg={3}>
-                    <GlassCard
-                        title="Presión"
-                        icon={<Speedometer2 size={20} style={{ color: '#C98A1A' }} />}
-                        value={sensorData?.presion != null ? sensorData.presion.toFixed(1) : null}
-                        unit="hPa"
-                        subtitle="Presión barométrica"
-                        isLive
-                    />
-                </Col>
+                    {/* Presión atmosférica */}
+                    <Col xs={12} sm={6} lg={3}>
+                        <GlassCard
+                            title="Presión"
+                            icon={<Speedometer2 size={20} style={{ color: '#C98A1A' }} />}
+                            value={sensorData?.presion != null ? sensorData.presion.toFixed(1) : null}
+                            unit="hPa"
+                            subtitle="Presión barométrica"
+                            isLive
+                        />
+                    </Col>
 
-                {/* Viento */}
-                <Col xs={12} sm={6} lg={3}>
-                    <GlassCard
-                        title="Viento"
-                        icon={<Wind size={20} style={{ color: '#6F5FD1' }} />}
-                        value={weatherApiData?.current ? weatherApiData.current.wind_kph : null}
-                        unit="km/h"
-                        subtitle={weatherApiData?.current ? `Dirección: ${weatherApiData.current.wind_dir}` : 'Sin datos de viento'}
-                    />
-                </Col>
+                    {/* Viento */}
+                    <Col xs={12} sm={6} lg={3}>
+                        <GlassCard
+                            title="Viento"
+                            icon={<Wind size={20} style={{ color: '#6F5FD1' }} />}
+                            value={weatherApiData?.current ? weatherApiData.current.wind_kph : null}
+                            unit="km/h"
+                            subtitle={weatherApiData?.current ? `Dirección: ${weatherApiData.current.wind_dir}` : 'Sin datos de viento'}
+                        />
+                    </Col>
 
-                {/* UV */}
-                <Col xs={12} sm={6} lg={3}>
-                    <GlassCard
-                        title="Índice UV"
-                        icon={<Sun size={20} style={{ color: '#E0A400' }} />}
-                        value={weatherApiData?.current ? weatherApiData.current.uv : null}
-                        subtitle={weatherApiData?.current ? `Nivel: ${uvNivel}` : 'Sin datos de UV'}
-                    />
-                </Col>
-            </Row>
+                    {/* UV */}
+                    <Col xs={12} sm={6} lg={3}>
+                        <GlassCard
+                            title="Índice UV"
+                            icon={<Sun size={20} style={{ color: '#E0A400' }} />}
+                            value={weatherApiData?.current ? weatherApiData.current.uv : null}
+                            subtitle={weatherApiData?.current ? `Nivel: ${uvNivel}` : 'Sin datos de UV'}
+                        />
+                    </Col>
+                </Row>
 
-        </Container>
+            </Container>
+        </>
     );
 }
