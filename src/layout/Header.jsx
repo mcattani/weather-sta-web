@@ -1,5 +1,6 @@
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { CloudSunFill } from 'react-bootstrap-icons';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
     return (
@@ -11,7 +12,7 @@ export default function Header() {
             <Container>
 
                 {/* Logo y título */}
-                <Navbar.Brand href="#" className="d-flex align-items-center gap-2 fw-bold mb-0">
+                <Navbar.Brand as={Link} to="/" className="d-flex align-items-center gap-2 fw-bold mb-0">
                     <CloudSunFill size={26} style={{ color: '#FFB74D' }} />
                     <span className="display-font">Weather STA</span>
                     <span className="eyebrow ms-1">TNA</span>
@@ -23,7 +24,7 @@ export default function Header() {
                 {/* Contenido colapsable */}
                 <Navbar.Collapse id="navbarScroll">
                     <Nav className="me-auto display-font">
-                        <Nav.Link href="#" className="nav-link fw-bold">
+                        <Nav.Link as={Link} to="/" className="nav-link fw-bold">
                             Pronóstico
                         </Nav.Link>
                         {/* Próximos links */}
