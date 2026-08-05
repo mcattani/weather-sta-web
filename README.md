@@ -40,7 +40,8 @@ La identidad gráfica y el estilo visual de esta aplicación (denominado **"Liqu
   - Viento y dirección
   - Índice UV
 - Manejo de estados de carga y errores.
-- Diseño totalmente responsivo para móviles, tablets y monitores multipantalla.
+- Enrutado cliente con `react-router-dom` y página 404 personalizada.
+- Diseño responsivo para diferentes tamaños de pantalla.
 
 ## Tecnologías usadas
 
@@ -49,6 +50,7 @@ La identidad gráfica y el estilo visual de esta aplicación (denominado **"Liqu
 - Bootstrap 5
 - React Bootstrap
 - Firebase Firestore
+- react-router-dom
 - react-bootstrap-icons
 - ESLint
 - React Helmet Async
@@ -64,7 +66,8 @@ src/
 ├── firebase.js
 ├── layout/
 ├── pages/
-│   └── Home.jsx
+│   ├── Home.jsx
+│   └── NotFound.jsx
 ├── App.jsx
 └── main.jsx
 ```
