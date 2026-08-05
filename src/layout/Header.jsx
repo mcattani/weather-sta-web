@@ -17,14 +17,14 @@ export default function Header() {
                     <span className="eyebrow ms-1">TNA</span>
                 </Navbar.Brand>
 
-                {/* Botón Hamburguesa */}
+                {/* Botón hamburguesa */}
                 <Navbar.Toggle aria-controls="navbarScroll" />
 
                 {/* Contenido colapsable */}
                 <Navbar.Collapse id="navbarScroll">
                     <Nav className="me-auto display-font">
                         <Nav.Link href="#" className="nav-link fw-bold">
-                            Inicio
+                            Pronóstico
                         </Nav.Link>
                         {/* Próximos links */}
                     </Nav>
