@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import packageJson from './package.json';
+// Import con assertion para evitar la advertencia de `configLoader: 'native'`.
+import packageJson from './package.json' assert { type: 'json' };
 
 // https://vite.dev/config/
 export default defineConfig({
