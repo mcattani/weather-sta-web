@@ -10,6 +10,7 @@ import {
     CloudSun,
     Sun
 } from 'react-bootstrap-icons';
+import { formatearFechaISO } from '../util/formatDate';
 import SEO from '../components/SEO';
 
 import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
@@ -19,39 +20,27 @@ import GlassCard from '../components/GlassCard';
 const WEATHER_API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 const CITY = 'Buenos Aires';
 
-function formatearFechaISO(fechaISO) {
-    const fecha = new Date(fechaISO);
-
-    if (Number.isNaN(fecha.getTime())) {
-        return 'Fecha no disponible';
-    }
-
-    const opciones = {
-        weekday: 'short',
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-    };
-
-    return new Intl.DateTimeFormat('es-AR', opciones).format(fecha);
-}
-
 export default function Home() {
     const [sensorData, setSensorData] = useState(null);
     const [weatherApiData, setWeatherApiData] = useState(null);
-    const [sensorError, setSensorError] = useState(null);
-    const [weatherError, setWeatherError] = useState(
-        WEATHER_API_KEY ? null : 'Falta la clave VITE_WEATHER_API_KEY.'
-    );
-    const [sensorStatus, setSensorStatus] = useState('loading');
-    const [weatherStatus, setWeatherStatus] = useState(
-        WEATHER_API_KEY ? 'loading' : 'error'
-    );
+    const [sensorLoading, setSensorLoading] = useState(true);
+    // Inicialización de estado para la API del clima.
+    let initialWeatherStatus = 'loading';
 
-    const loading = sensorStatus === 'loading' || weatherStatus === 'loading';
+    // Si no hay clave de API, mostrar error por consola y no mostrar datos.
+    if (!WEATHER_API_KEY) {
+        console.error('Falta la clave VITE_WEATHER_API_KEY.');
+        initialWeatherStatus = 'error';
+    }
+
+    const [weatherError, setWeatherError] = useState(null);
+    const [weatherStatus, setWeatherStatus] = useState(initialWeatherStatus);
+
+    const loading = sensorLoading || weatherStatus === 'loading';
+
+    // Estado de la estación y clase del badge, calculados en effect
+    const [estadoEstacion, setEstadoEstacion] = useState('Sin datos');
+    const [badgeStatusClass, setBadgeStatusClass] = useState('is-offline');
 
     // Suscripción a Firestore para recibir el último dato de los sensores en tiempo real.
     useEffect(() => {
@@ -67,17 +56,43 @@ export default function Home() {
                 if (!snapshot.empty) {
                     const doc = snapshot.docs[0].data();
                     setSensorData(doc);
-                    setSensorError(null);
-                    setSensorStatus('ready');
+
+                    // Calcular estado de la estación en el momento que llega el dato
+                    if (doc.timestamp) {
+                        // ts es la fecha de la lectura del sensor
+                        const ts = new Date(doc.timestamp).getTime();
+                        // ageMs es la diferencia en milisegundos entre la fecha actual y la lectura del sensor
+                        const ageMs = Date.now() - ts;
+                        // Cantidad de milisegundos que debe tener la estación para que se considera offline
+                        const oneHourMs = 60 * 60 * 1000;
+
+                        if (ageMs > oneHourMs) {
+                            setEstadoEstacion('Estación Offline');
+                            setBadgeStatusClass('is-offline');
+                        } else {
+                            setEstadoEstacion('Estación Online');
+                            setBadgeStatusClass('is-online');
+                        }
+                    } else {
+                        setEstadoEstacion('Sin datos');
+                        setBadgeStatusClass('is-offline');
+                    }
                 } else {
-                    setSensorError("No hay datos disponibles");
-                    setSensorStatus('error');
+                    // No hay documentos en la colección
+                    setSensorData(null);
+                    setEstadoEstacion('Sin datos');
+                    setBadgeStatusClass('is-offline');
                 }
+
+                setSensorLoading(false);
             },
             (err) => {
                 console.error('Error Firestore:', err);
-                setSensorError("Error al conectar con la base de datos.");
-                setSensorStatus('error');
+                // En caso de error, tratamos como ausencia de datos
+                setSensorData(null);
+                setEstadoEstacion('Sin datos');
+                setBadgeStatusClass('is-offline');
+                setSensorLoading(false);
             }
         );
 
@@ -123,12 +138,64 @@ export default function Home() {
         );
     }
 
-    const alertMessage = sensorError || weatherError;
-    const alertVariant = sensorError && weatherError ? 'warning' : 'danger';
-    const ultimaLectura = sensorData?.timestamp ? formatearFechaISO(sensorData.timestamp) : 'N/A';
-    const hayDatosRecientes = Boolean(sensorData?.timestamp);
-    const estadoEstacion = hayDatosRecientes ? 'Estación Online' : 'Sin datos recientes';
-    const badgeStatusClass = hayDatosRecientes ? 'is-online' : 'is-offline';
+    // Mensaje de alerta solo para errores de la API externa (WeatherAPI).
+    let alertMessage;
+    let alertVariant;
+    if (weatherError) {
+        alertMessage = weatherError;
+        alertVariant = 'danger';
+    } else {
+        alertMessage = undefined;
+        alertVariant = 'info';
+    }
+
+    // Formateo de la última lectura
+    let ultimaLectura = 'N/A';
+    if (sensorData?.timestamp) {
+        ultimaLectura = formatearFechaISO(sensorData.timestamp);
+    }
+
+    // El estado de la estación se actualiza directamente desde onSnapshot
+    // Temperatura (nulo si no hay dato)
+    let temperaturaValor = null;
+    if (sensorData?.temperatura != null) {
+        temperaturaValor = sensorData.temperatura.toFixed(1);
+    }
+
+    // Sensación térmica (texto alternativo si no hay datos externos)
+    let temperaturaSubtitle = 'Sin datos de sensación';
+    if (weatherApiData?.current) {
+        temperaturaSubtitle = `Sensación térmica: ${weatherApiData.current.feelslike_c}°C`;
+    }
+
+    // Humedad
+    let humedadValor = null;
+    if (sensorData?.humedad != null) {
+        humedadValor = sensorData.humedad.toFixed(1);
+    }
+
+    // Punto de rocío / subtítulo
+    let humedadSubtitle = 'Sin datos de rocío';
+    if (weatherApiData?.current) {
+        const dew = weatherApiData.current.dewpoint_c ?? '--';
+        humedadSubtitle = `Punto de rocío: ${dew}°C`;
+    }
+
+    // Presión
+    let presionValor = null;
+    if (sensorData?.presion != null) {
+        presionValor = sensorData.presion.toFixed(1);
+    }
+
+    // Viento — velocidad y subtítulo de dirección
+    let vientoValor = null;
+    let vientoSubtitle = 'Sin datos de viento';
+    if (weatherApiData?.current) {
+        vientoValor = weatherApiData.current.wind_kph;
+        vientoSubtitle = `Dirección: ${weatherApiData.current.wind_dir}`;
+    }
+
+    // UV — calcular nivel primero, luego preparar valores para mostrar
     const uvValue = weatherApiData?.current?.uv;
     let uvNivel = 'Sin datos';
 
@@ -144,6 +211,13 @@ export default function Home() {
         } else {
             uvNivel = 'Extremo';
         }
+    }
+
+    let uvMostrar = null;
+    let uvSubtitle = 'Sin datos de UV';
+    if (weatherApiData?.current) {
+        uvMostrar = weatherApiData.current.uv;
+        uvSubtitle = `Nivel: ${uvNivel}`;
     }
 
     // Render principal del dashboard con valores de respaldo si alguna fuente falla.
@@ -195,9 +269,9 @@ export default function Home() {
                         <GlassCard
                             title="Temperatura"
                             icon={<ThermometerHalf size={20} style={{ color: 'var(--accent-coral)' }} />}
-                            value={sensorData?.temperatura != null ? sensorData.temperatura.toFixed(1) : null}
+                            value={temperaturaValor}
                             unit="°C"
-                            subtitle={weatherApiData?.current ? `Sensación térmica: ${weatherApiData.current.feelslike_c}°C` : 'Sin datos de sensación'}
+                            subtitle={temperaturaSubtitle}
                             isLive
                         />
                     </Col>
@@ -207,9 +281,9 @@ export default function Home() {
                         <GlassCard
                             title="Humedad"
                             icon={<DropletHalf size={20} style={{ color: 'var(--accent-teal)' }} />}
-                            value={sensorData?.humedad != null ? sensorData.humedad.toFixed(1) : null}
+                            value={humedadValor}
                             unit="%"
-                            subtitle={weatherApiData?.current ? `Punto de rocío: ${weatherApiData.current.dewpoint_c ?? '--'}°C` : 'Sin datos de rocío'}
+                            subtitle={humedadSubtitle}
                             isLive
                         />
                     </Col>
@@ -219,7 +293,7 @@ export default function Home() {
                         <GlassCard
                             title="Presión"
                             icon={<Speedometer2 size={20} style={{ color: '#C98A1A' }} />}
-                            value={sensorData?.presion != null ? sensorData.presion.toFixed(1) : null}
+                            value={presionValor}
                             unit="hPa"
                             subtitle="Presión barométrica"
                             isLive
@@ -231,9 +305,9 @@ export default function Home() {
                         <GlassCard
                             title="Viento"
                             icon={<Wind size={20} style={{ color: '#6F5FD1' }} />}
-                            value={weatherApiData?.current ? weatherApiData.current.wind_kph : null}
+                            value={vientoValor}
                             unit="km/h"
-                            subtitle={weatherApiData?.current ? `Dirección: ${weatherApiData.current.wind_dir}` : 'Sin datos de viento'}
+                            subtitle={vientoSubtitle}
                         />
                     </Col>
 
@@ -242,8 +316,8 @@ export default function Home() {
                         <GlassCard
                             title="Índice UV"
                             icon={<Sun size={20} style={{ color: '#E0A400' }} />}
-                            value={weatherApiData?.current ? weatherApiData.current.uv : null}
-                            subtitle={weatherApiData?.current ? `Nivel: ${uvNivel}` : 'Sin datos de UV'}
+                            value={uvMostrar}
+                            subtitle={uvSubtitle}
                         />
                     </Col>
                 </Row>
