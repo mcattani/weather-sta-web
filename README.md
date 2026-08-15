@@ -39,8 +39,10 @@ La identidad gráfica y el estilo visual de esta aplicación (denominado **"Liqu
   - Sensación térmica
   - Viento y dirección
   - Índice UV
+  - Pronóstico de los próximos días
 - Manejo de estados de carga y errores.
 - Enrutado cliente con `react-router-dom` y página 404 personalizada.
+- Vista de pronóstico en la ruta `/forecast` con cards de clima por día.
 - Diseño responsivo para diferentes tamaños de pantalla.
 
 ## Tecnologías usadas
@@ -62,14 +64,21 @@ src/
 ├── assets/
 │   └── glass-theme.css
 ├── components/
-│   └── GlassCard.jsx
+│   ├── GlassCard.jsx
+│   └── SEO.jsx
 ├── firebase.js
 ├── layout/
+│   ├── Header.jsx
+│   └── Footer.jsx
 ├── pages/
 │   ├── Home.jsx
+│   ├── Forecast.jsx
 │   └── NotFound.jsx
+├── util/
+│   └── formatDate.js
 ├── App.jsx
-└── main.jsx
+├── main.jsx
+└── ...
 ```
 
 ## Instalación local
