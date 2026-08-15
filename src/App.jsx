@@ -10,6 +10,7 @@ import Footer from './layout/Footer'
 // Importamos las páginas con 'lazy' para que se carguen de forma asíncrona.
 const Home = lazy(() => import('./pages/Home'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Forecast = lazy(() => import('./pages/Forecast'));
 
 // Spinner simple para mostrar mientras se carga la página
 const PageLoader = () => (
@@ -30,6 +31,7 @@ function App() {
             <Suspense fallback={<PageLoader />}>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/forecast" element={<Forecast />} />
                 {/*Ruta no existente*/}
                 <Route path='*' element={<NotFound />} />
               </Routes>

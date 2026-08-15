@@ -24,7 +24,7 @@ export default function Header() {
                 {/* Contenido colapsable */}
                 <Navbar.Collapse id="navbarScroll">
                     <Nav className="me-auto display-font">
-                        <Nav.Link as={Link} to="/" className="nav-link fw-bold">
+                        <Nav.Link as={Link} to="/forecast" className="nav-link fw-bold">
                             Pronóstico
                         </Nav.Link>
                         {/* Próximos links */}
