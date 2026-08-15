@@ -113,50 +113,61 @@ export default function Forecast() {
                 </div>
 
                 <Row className="g-3 g-lg-4">
-                    {forecast.map((day) => (
-                        <Col key={day.fecha} xs={12} md={6} lg={4}>
-                            <div className="glass-card h-100 p-3">
-                                <div className="d-flex justify-content-between align-items-center mb-2">
-                                    <span className="eyebrow d-flex align-items-center gap-2">
-                                        <Calendar3 size={14} />
-                                        {day.fecha}
-                                    </span>
+                    {forecast.map((day) => {
+                        {/* Si la probabilidad de lluvia es baja, ocultamos la fila*/}
+                        const shouldShowRainChance = day.rainChance != null && day.rainChance >= 25;
 
-                                    {day.icon && (
-                                        <img src={day.icon} alt={day.estadoTiempo} width={36} height={36} />
+                        return (
+                            <Col key={day.fecha} xs={12} md={6} lg={4}>
+                                <div className="glass-card h-100 p-3">
+                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                        <span className="eyebrow d-flex align-items-center gap-2">
+                                            <Calendar3 size={14} />
+                                            {day.fecha}
+                                        </span>
+
+                                        {day.icon && (
+                                            <img src={day.icon} alt={day.estadoTiempo} width={36} height={36} />
+                                        )}
+                                    </div>
+
+                                    <h3 className="condition-readout mb-3">{day.estadoTiempo}</h3>
+
+                                    <div className="d-flex justify-content-center gap-4 mb-3">
+                                        <div className="text-center">
+                                            <small className="text-muted d-block">Máx.</small>
+                                            <div className="d-flex align-items-center justify-content-center gap-1 readout">
+                                                <ThermometerHigh size={18} style={{ color: 'var(--accent-coral)' }} />
+                                                {day.maxTemp ?? '--'}°
+                                            </div>
+                                        </div>
+
+                                        <div className="text-center">
+                                            <small className="text-muted d-block">Mín.</small>
+                                            <div className="d-flex align-items-center justify-content-center gap-1 readout">
+                                                <ThermometerLow size={18} style={{ color: 'var(--accent-teal)' }} />
+                                                {day.minTemp ?? '--'}°
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/*
+                                        Si la probabilidad de lluvia es < 25, ocultamos la fila para mantener
+                                        la tarjeta más limpia
+                                    */}
+                                    {shouldShowRainChance && (
+                                        <div className="text-center">
+                                            <small className="text-muted d-block">Prob. de lluvia</small>
+                                            <div className="d-flex align-items-center justify-content-center gap-2 fw-semibold">
+                                                <CloudRainHeavy size={16} style={{ color: '#3B82F6' }} />
+                                                {day.rainChance}%
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
-
-                                <h3 className="condition-readout mb-3">{day.estadoTiempo}</h3>
-
-                                <div className="d-flex justify-content-center gap-4 mb-3">
-                                    <div className="text-center">
-                                        <small className="text-muted d-block">Máx.</small>
-                                        <div className="d-flex align-items-center justify-content-center gap-1 readout">
-                                            <ThermometerHigh size={18} style={{ color: 'var(--accent-coral)' }} />
-                                            {day.maxTemp ?? '--'}°
-                                        </div>
-                                    </div>
-
-                                    <div className="text-center">
-                                        <small className="text-muted d-block">Mín.</small>
-                                        <div className="d-flex align-items-center justify-content-center gap-1 readout">
-                                            <ThermometerLow size={18} style={{ color: 'var(--accent-teal)' }} />
-                                            {day.minTemp ?? '--'}°
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="text-center">
-                                    <small className="text-muted d-block">Prob. de lluvia</small>
-                                    <div className="d-flex align-items-center justify-content-center gap-2 fw-semibold">
-                                        <CloudRainHeavy size={16} style={{ color: '#3B82F6' }} />
-                                        {day.rainChance ?? '--'}%
-                                    </div>
-                                </div>
-                            </div>
-                        </Col>
-                    ))}
+                            </Col>
+                        );
+                    })}
                 </Row>
             </Container>
         </>
