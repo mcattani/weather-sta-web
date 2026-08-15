@@ -1,7 +1,5 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-// Import con assertion para evitar la advertencia de `configLoader: 'native'`.
-import packageJson from './package.json' assert { type: 'json' };
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,7 +9,7 @@ export default defineConfig({
     cssTarget: ['chrome100', 'safari15', 'firefox100'],
   },
   define: {
-    // Inyecta la versión de package.json en la constante __APP_VERSION__
-    __APP_VERSION__: JSON.stringify(packageJson.version),
+    // Usa la versión del proyecto sin depender de imports JSON con sintaxis no compatible.
+    __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
   },
 });
