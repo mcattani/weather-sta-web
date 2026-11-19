@@ -1,6 +1,6 @@
 # Weather Station Web
 
-![React](https://img.shields.io/badge/React-19.2.7-61DAFB?logo=react)
+![React](https://img.shields.io/badge/React-19.x-61DAFB?logo=react)
 ![Vite](https://img.shields.io/badge/Vite-8.x-646CFF?logo=vite)
 ![Firebase](https://img.shields.io/badge/Firebase-Firestore-FFCA28?logo=firebase)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5.x-7952B3?logo=bootstrap)
@@ -85,7 +85,7 @@ src/
 
 Requisitos:
 
-- Node.js 18 o superior
+- Node.js 20.19+ (rama 20) o 22.12+
 - npm
 
 Pasos:
