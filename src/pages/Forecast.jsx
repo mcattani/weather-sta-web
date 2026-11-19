@@ -137,7 +137,7 @@ export default function Forecast() {
                                         <div className="text-center">
                                             <small className="text-muted d-block">Máx.</small>
                                             <div className="d-flex align-items-center justify-content-center gap-1 readout">
-                                                <ThermometerHigh size={18} style={{ color: 'var(--accent-coral)' }} />
+                                                <ThermometerHigh size={18} style={{ color: '#B94730' }} />
                                                 {day.maxTemp ?? '--'}°
                                             </div>
                                         </div>
@@ -145,7 +145,7 @@ export default function Forecast() {
                                         <div className="text-center">
                                             <small className="text-muted d-block">Mín.</small>
                                             <div className="d-flex align-items-center justify-content-center gap-1 readout">
-                                                <ThermometerLow size={18} style={{ color: 'var(--accent-teal)' }} />
+                                                <ThermometerLow size={18} style={{ color: '#0F6F68' }} />
                                                 {day.minTemp ?? '--'}°
                                             </div>
                                         </div>
