@@ -282,6 +282,37 @@ body::after {
 .glass-badge.is-online { color: #0B6B4F; }
 .glass-badge.is-offline { color: #9A5B00; }
 
+.glass-period-group {
+  gap: 0.35rem;
+}
+
+.glass-period-btn {
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.34) !important;
+  color: var(--ink) !important;
+  font-weight: 600 !important;
+  white-space: nowrap;
+}
+
+.glass-period-btn:hover,
+.glass-period-btn:focus-visible {
+  background: rgba(255, 255, 255, 0.62) !important;
+  color: var(--ink) !important;
+}
+
+.glass-period-btn.active,
+.glass-period-btn.active:hover {
+  background: var(--ink) !important;
+  border-color: var(--ink) !important;
+  color: #fff !important;
+}
+
+.history-chart {
+  width: 100%;
+  height: 320px;
+}
+
 /* Animación de "dato en vivo", usada en los íconos que vienen del
    ESP32 (temperatura, humedad, presión) para indicar que la estación
    está transmitiendo en tiempo real (respeta prefers-reduced-motion) */
@@ -307,6 +338,12 @@ body::after {
 
 @media (prefers-reduced-motion: reduce) {
   .live-pulse::after { animation: none; display: none; }
+}
+
+@media (max-width: 576px) {
+  .history-chart {
+    height: 280px;
+  }
 }
 
 /* El texto "muted" se ve más suave sobre el vidrio que el gris

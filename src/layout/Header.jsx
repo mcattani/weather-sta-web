@@ -27,7 +27,9 @@ export default function Header() {
                         <Nav.Link as={Link} to="/forecast" className="nav-link fw-bold">
                             Pronóstico
                         </Nav.Link>
-                        {/* Próximos links */}
+                        <Nav.Link as={Link} to="/historico" className="nav-link fw-bold">
+                            Histórico
+                        </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
 

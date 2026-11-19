@@ -43,6 +43,7 @@ La identidad gráfica y el estilo visual de esta aplicación (denominado **"Liqu
 - Manejo de estados de carga y errores.
 - Enrutado cliente con `react-router-dom` y página 404 personalizada.
 - Vista de pronóstico en la ruta `/forecast` con cards de clima por día.
+- Histórico de temperatura, humedad y presión con filtros de 24 horas, 7 días y 30 días.
 - Diseño responsivo para diferentes tamaños de pantalla.
 
 ## Tecnologías usadas
@@ -51,6 +52,7 @@ La identidad gráfica y el estilo visual de esta aplicación (denominado **"Liqu
 - Vite
 - Bootstrap 5
 - React Bootstrap
+- Recharts
 - Firebase Firestore
 - react-router-dom
 - react-bootstrap-icons
@@ -73,6 +75,7 @@ src/
 ├── pages/
 │   ├── Home.jsx
 │   ├── Forecast.jsx
+│   ├── History.jsx
 │   └── NotFound.jsx
 ├── util/
 │   └── formatDate.js

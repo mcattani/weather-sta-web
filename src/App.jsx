@@ -11,6 +11,7 @@ import Footer from './layout/Footer'
 const Home = lazy(() => import('./pages/Home'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Forecast = lazy(() => import('./pages/Forecast'));
+const History = lazy(() => import('./pages/History'));
 
 // Spinner simple para mostrar mientras se carga la página
 const PageLoader = () => (
@@ -32,6 +33,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/forecast" element={<Forecast />} />
+                <Route path="/historico" element={<History />} />
                 {/*Ruta no existente*/}
                 <Route path='*' element={<NotFound />} />
               </Routes>
